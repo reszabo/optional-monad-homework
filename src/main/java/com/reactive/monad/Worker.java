@@ -1,14 +1,14 @@
 package com.reactive.monad;
 
-import com.google.common.primitives.Ints;
-
 import java.util.Optional;
+
+import com.google.common.primitives.Ints;
 
 /**
  * The goal is to implement the retrieval of an integer value.
  * The value is stored as a String inside MyNestedObject. This object is stored in MyObject.
  * Both MyObject, MyNestedObject and the value can be null.
- *
+ * <p>
  * The return value is default "1" in case any of the earlier listed objects are null,
  * the String value can't be parsed to Integer or if it is a negative number.
  */
@@ -17,14 +17,12 @@ public class Worker {
     private static final Integer DEFAULT_RETURN_VALUE = 1;
 
     public Integer getPositiveIntFromObjectWithDefaultMonad(MyObject obj) {
-        return Optional.ofNullable(
-                Ints.tryParse(
-                        Optional.ofNullable(obj)
-                                .flatMap(MyObject::getNested)
-                                .flatMap(MyNestedObject::getIntLikeData)
-                                .orElse("1")))
-                .filter(value -> value >= 0)
-                .orElse(DEFAULT_RETURN_VALUE);
+        return Optional.ofNullable(obj)
+                        .flatMap(MyObject::getNested)
+                        .flatMap(MyNestedObject::getIntLikeData)
+                        .map(Ints::tryParse)
+                        .filter(value -> value >= 0)
+                        .orElse(DEFAULT_RETURN_VALUE);
     }
 
     /**
