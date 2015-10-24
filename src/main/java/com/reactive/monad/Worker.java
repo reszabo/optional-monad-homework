@@ -18,11 +18,11 @@ public class Worker {
 
     public Integer getPositiveIntFromObjectWithDefaultMonad(MyObject obj) {
         return Optional.ofNullable(obj)
-                        .flatMap(MyObject::getNested)
-                        .flatMap(MyNestedObject::getIntLikeData)
-                        .map(Ints::tryParse)
-                        .filter(value -> value >= 0)
-                        .orElse(DEFAULT_RETURN_VALUE);
+                       .flatMap(MyObject::getNested)
+                       .flatMap(MyNestedObject::getIntLikeData)
+                       .map(Ints::tryParse)
+                       .filter(value -> value >= 0)
+                       .orElse(DEFAULT_RETURN_VALUE);
     }
 
     /**
