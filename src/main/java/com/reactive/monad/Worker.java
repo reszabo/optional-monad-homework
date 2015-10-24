@@ -17,8 +17,14 @@ public class Worker {
     private static final Integer DEFAULT_RETURN_VALUE = 1;
 
     public Integer getPositiveIntFromObjectWithDefaultMonad(MyObject obj) {
-        // TODO: Implement the same flow using Optional monad and function composition as shown below in the imperative code
-        return -1;
+        return Optional.ofNullable(
+                Ints.tryParse(
+                        Optional.ofNullable(obj)
+                                .flatMap(MyObject::getNested)
+                                .flatMap(MyNestedObject::getIntLikeData)
+                                .orElse("1")))
+                .filter(value -> value >= 0)
+                .orElse(DEFAULT_RETURN_VALUE);
     }
 
     /**
